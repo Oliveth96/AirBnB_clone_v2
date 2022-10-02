@@ -1,26 +1,93 @@
 #!/usr/bin/python3
 # A Fabric script that deletes out-of-date archives
-from fabric.api import *
+from os.path import basename, isfile, join, sep, splitext
+from shlex import quote
+from time import strftime
+from fabric.api import env, local, put, run
 
-env.hosts = ["104.196.168.90", "35.196.46.172"]
+env.hosts = ['35.196.167.155', '34.73.252.236']
+
+
+def do_pack():
+    """
+    Archive the contents of web_static
+    """
+    now = strftime('%Y%m%d%H%M%S')
+    tgz = join('versions', 'web_static_{}.tgz'.format(now))
+    local('mkdir -p versions')
+    local('tar -czf {} web_static'.format(quote(tgz)))
+    return tgz if isfile(tgz) else None
+
+
+def do_deploy(archive_path):
+    """
+    Deploy an archive to my Holberton web servers
+    """
+    if isfile(archive_path):
+        source_name = basename(archive_path)
+        source_path = join(sep, 'tmp', source_name)
+        dest_name = splitext(source_name)[0]
+        dest_path = join(sep, 'data', 'web_static', 'releases', dest_name)
+        put(archive_path, source_path)
+        run('mkdir -p {}'.format(
+            quote(dest_path)
+        ))
+        run('tar -xzf {} -C {}'.format(
+            quote(source_path),
+            quote(dest_path)
+        ))
+        run('rm -f {}'.format(
+            quote(source_path)
+        ))
+        run('mv {} {}'.format(
+            join(quote(join(dest_path, 'web_static')), '*'),
+            quote(join(dest_path, ''))
+        ))
+        run('rm -rf {}'.format(
+            quote(join(dest_path, 'web_static'))
+        ))
+        run('rm -rf {}'.format(
+            quote(join(sep, 'data', 'web_static', 'current'))
+        ))
+        run('ln -s {} {}'.format(
+            quote(dest_path),
+            quote(join(sep, 'data', 'web_static', 'current'))
+        ))
+        return True
+    return False
 
 
 def do_clean(number=0):
-    """Delete out-of-date archives.
-    Args:
-        number (int): The number of archives to keep.
-        If number is 0 or 1, keeps only the most recent archive. If
-        number is 2, keeps the most and second-most recent archives etc.
     """
-    number = 1 if int(number) == 0 else int(number)
+    Remove out-of-date web_static archives
+    """
+    try:
+        number = int(number)
+    except ValueError:
+        pass
+    else:
+        command = " | ".join([
+            "find {{}} -maxdepth 1 -mindepth 1 -name {} -printf {}".format(
+                quote('web_static_*'), quote('%T@:%p\\0')
+            ),
+            "sort -nrz",
+            "cut -f {}- -d ''".format(number + 1 if number > 1 else 2),
+            "sed 's/[[:digit:].:]*://g'",
+            "xargs -0 rm -rf",
+        ])
 
-    archives = sorted(os.listdir("versions"))
-    [archives.pop() for i in range(number)]
-    with lcd("versions"):
-        [local("rm ./{}".format(a)) for a in archives]
+        local_path = 'versions'
+        local(command.format(local_path))
 
-    with cd("/data/web_static/releases"):
-        archives = run("ls -tr").split()
-        archives = [a for a in archives if "web_static_" in a]
-        [archives.pop() for i in range(number)]
-        [run("rm -rf ./{}".format(a)) for a in archives]
+        remote_path = join(sep, 'data', 'web_static', 'releases')
+        run(command.format(remote_path))
+
+
+def deploy():
+    """
+    Archive the contents of web_static and deploy it to my web servers
+    """
+    try:
+        return do_deploy(do_pack())
+    except TypeError:
+        return False
