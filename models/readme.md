@@ -10,18 +10,17 @@ This repository contains the initial stage of a student project to build a clone
 | ----- | ----- | ------ |
 | 0: Authors/README File | [AUTHORS](https://github.com/Oliveth96/AirBnB_clone_v2/AUTHORS) | Project authors |
 | 1: Pep8 | N/A | All code is pep8 compliant|
+| 2: Unit Testing | [/tests](https://github.com/Oliveth96/AirBnB_clone_v2/tests) | All class-defining modules are unittested |
+| 3. Make BaseModel | [/models/base_model.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/base_model.py) | Defines a parent class to be inherited by all model classes|
+| 4. Update BaseModel w/ kwargs | [/models/base_model.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/base_model.py) | Add functionality to recreate an instance of a class from a dictionary representation|
+| 5. Create FileStorage class | [/models/engine/file_storage.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/engine/file_storage.py) [/models/_ _init_ _.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/__init__.py) [/models/base_model.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/base_model.py) | Defines a class to manage persistent file storage system|
 
-| 2: 1-pack_web_static.py |
-(https://github.com/Oliveth96/AirBnB_clone_v2/1-pack_web_static.py) | Fabric script that generates a .tgz archive from the contents of the web_static folder of your AirBnB Clone repo, using the function do_pack |
+| 7. Create User class | 
+[/models/engine/file_storage.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/engine/file_storage.py) [/models/user.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/user.py) | Dynamically implements a user class |
+| 8. More Classes | [/models/user.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/user.py) [/models/place.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/place.py) [/models/city.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/city.py) [/models/amenity.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/amenity.py) [/models/state.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/state.py) [/models/review.py](https://github.com/Oliveth96/AirBnB_clone_v2/models/review.py) | Dynamically implements more classes |
 
-| 3: 2-do_deploy_web_static.py | (https://github.com/Oliveth96/AirBnB_clone_v2/2-do_deploy_web_static.py) | A Fabric script (based on the file 1-pack_web_static.py) that distributes an archive to your web servers, using the function do_deploy |
+|10. 0-setup_web_static.sh | (https://github.com/Oliveth96/AirBnB_clone_v2/0-setup_web_static.sh) | A Bash script that sets up your web servers for the deployment of web_static|
 
-|4: 3-deploy_web_static.py | (https://github.com/Oliveth96/AirBnB_clone_v2/3-deploy_web_static.py) | Fabric script (based on the file 2-do_deploy_web_static.py) that creates and distributes an archive to your web servers, using the function deploy |
-
-|5: 100-clean_web_static.py | (https://github.com/Oliveth96/AirBnB_clone_v2/100-clean_web_static.py) |A  Fabric script (based on the file 3-deploy_web_static.py) that deletes out-of-date archives, using the function do_clean |
-
-
-|6: 101-setup_web_static.pp| ( https://github.com/Oliveth96/AirBnB_clone_v2/101-setup_web_static.pp) | Redo the task #2 but by using Puppet |
 
 <br>
 <br>
