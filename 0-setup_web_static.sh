@@ -1,17 +1,16 @@
 #!/usr/bin/bash
-#A Bash script that sets up my
-#web servers for the deployment of web_static
+#A Bash script that sets up my web servers for the deployment of web_static
 
 #Install Nginx
-apt install -y nginx
+sudo apt-get -y update
+sudo apt-get -y install nginx
 
 #Create folders
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
-mkdir -p /data/web_static/releases/test/
 
 #create a fake HTNL file
-echo "Fake HTML content ..." >/data/web_static/releases/test/index.html
+echo "Fake HTML content" >/data/web_static/releases/test/index.html
 
 #Create a symbolic link
 sudo ln -sf "/data/web_static/releases/test" "/data/web_static/current"
