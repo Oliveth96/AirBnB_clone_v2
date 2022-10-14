@@ -18,7 +18,7 @@ def hello_hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def display_c():
+def display_c(text):
     """Displays C message"""
     text = text.replace('_', " ")
     return "C {}".format(text)
