@@ -11,7 +11,7 @@ def hello_Flask():
     return "Hello HBNB!"
 
 
-@app.route('/', strict_slashes=False)
+@app.route('/hbnb', strict_slashes=False)
 def hello_hbnb():
     """ Returns HBNB"""
     return "HBNB"
